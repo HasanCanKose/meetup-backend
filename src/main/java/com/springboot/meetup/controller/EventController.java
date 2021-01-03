@@ -1,5 +1,6 @@
 package com.springboot.meetup.controller;
 
+import com.springboot.meetup.dto.EventUpdateDto;
 import com.springboot.meetup.entity.Event;
 import com.springboot.meetup.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +34,10 @@ public class EventController {
     @RequestMapping(method = RequestMethod.POST, value = "/events")
     public Event createEvent(HttpServletRequest request, @RequestBody Event event){
         return eventService.createEvent(request, event);
+    }
+
+    @RequestMapping(method = RequestMethod.PATCH, value = "/events")
+    public Event updateEvent(@RequestBody EventUpdateDto updateDto) {
+        return eventService.updateEvent(updateDto);
     }
 }
