@@ -1,6 +1,7 @@
 package com.springboot.meetup.controller;
 
 import com.springboot.meetup.dto.EventUpdateDto;
+import com.springboot.meetup.dto.ParticipantDto;
 import com.springboot.meetup.entity.Event;
 import com.springboot.meetup.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +43,10 @@ public class EventController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/events/{eventId}")
     public void deleteEvent(HttpServletRequest request, @PathVariable int eventId) throws ResponseStatusException {
         eventService.deleteEvent(request, eventId);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/events/addParticipant")
+    public Event addParticipant(HttpServletRequest request, @RequestBody ParticipantDto participantDto){
+        return eventService.addParticipant(request, participantDto);
     }
 }

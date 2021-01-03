@@ -1,6 +1,7 @@
 package com.springboot.meetup.service;
 
 import com.springboot.meetup.dto.EventUpdateDto;
+import com.springboot.meetup.dto.ParticipantDto;
 import com.springboot.meetup.entity.Event;
 import com.springboot.meetup.entity.User;
 import com.springboot.meetup.repository.EventRepository;
@@ -71,5 +72,15 @@ public class EventService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User does not have authorization to delete this event");
         }
         eventRepository.deleteById(event.getId());
+    }
+
+    public Event addParticipant(HttpServletRequest request, ParticipantDto participantDto){
+        Principal principal = request.getUserPrincipal();
+        User user = userRepository.findByUserName(principal.getName());
+        Event event = eventRepository.findById(participantDto.getEventId()).orElseThrow(() -> new EntityNotFoundException(participantDto.toString()));
+        List<User> users = event.getUsers();
+        users.add(user);
+        event.setUsers(users);
+        return eventRepository.save(event);
     }
 }
