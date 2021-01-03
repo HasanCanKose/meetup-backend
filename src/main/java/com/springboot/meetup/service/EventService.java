@@ -6,7 +6,9 @@ import com.springboot.meetup.entity.User;
 import com.springboot.meetup.repository.EventRepository;
 import com.springboot.meetup.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
@@ -59,5 +61,15 @@ public class EventService {
             event.setDate(updateDto.getDate());
         }
         return eventRepository.save(event);
+    }
+
+    public void deleteEvent(HttpServletRequest request, int eventId) throws ResponseStatusException {
+        Principal principal = request.getUserPrincipal();
+        User user = userRepository.findByUserName(principal.getName());
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new EntityNotFoundException("Event not found"));
+        if(user.getId() != event.getUser().getId()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User does not have authorization to delete this event");
+        }
+        eventRepository.deleteById(event.getId());
     }
 }
