@@ -83,4 +83,14 @@ public class EventService {
         event.setUsers(users);
         return eventRepository.save(event);
     }
+
+    public Event removeParticipant(HttpServletRequest request, ParticipantDto participantDto){
+        Principal principal = request.getUserPrincipal();
+        User user = userRepository.findByUserName(principal.getName());
+        Event event = eventRepository.findById(participantDto.getEventId()).orElseThrow(() -> new EntityNotFoundException(participantDto.toString()));
+        List<User> users = event.getUsers();
+        users.remove(user);
+        event.setUsers(users);
+        return eventRepository.save(event);
+    }
 }

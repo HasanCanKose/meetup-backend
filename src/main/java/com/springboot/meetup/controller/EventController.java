@@ -49,4 +49,9 @@ public class EventController {
     public Event addParticipant(HttpServletRequest request, @RequestBody ParticipantDto participantDto){
         return eventService.addParticipant(request, participantDto);
     }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/events/removeParticipant")
+    public Event removeParticipant(HttpServletRequest request, @RequestBody ParticipantDto participantDto){
+        return eventService.removeParticipant(request, participantDto);
+    }
 }
