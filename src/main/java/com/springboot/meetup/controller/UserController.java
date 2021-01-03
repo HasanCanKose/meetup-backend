@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 public class UserController {
 
@@ -18,6 +20,11 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST, value = "/users/create")
     public User createUser(@RequestBody User user){
         return userService.createUser(user);
+    }
+
+    @RequestMapping("/users/get")
+    public User getUser(HttpServletRequest request) {
+        return userService.getUser(request);
     }
 
 }
