@@ -34,4 +34,11 @@ public class EventService {
         eventRepository.findByUserId(user.getId()).forEach(events::add);
         return events;
     }
+
+    public Event createEvent(HttpServletRequest request, Event event){
+        Principal principal = request.getUserPrincipal();
+        User user = userRepository.findByUserName(principal.getName());
+        event.setUser(user);
+        return eventRepository.save(event);
+    }
 }
